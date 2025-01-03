@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import  services from './services/person'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -10,8 +11,7 @@ const App = () => {
   const [filterName, setFilterName] = useState('')
 
   useEffect(() => {
-    fetch('http://localhost:3000/persons')
-      .then(response => response.json())
+    services.getAll()
       .then(data => {
         setPersons(data)
         setShowPersons(data)
@@ -22,16 +22,31 @@ const App = () => {
     e.preventDefault()
     const result = persons.find(person => person.name === newName)
     if (result) {
-      alert(`${newName} is already added to phonebook`)
+      if(window.confirm(`${result.name} is already added to phonebook, do you want replace old number with new one ?`)) {
+        services.updateRecord(result.id, {...result, number: newNumber})
+          .then(response => {
+            const newRecords = persons.map(person => person.id !== response.id ? person : response)
+            setPersons(newRecords)
+            setShowPersons(newRecords)
+            setNewName('')
+            setNewNumber('')
+          })
+      }
       return
     }
-    setPersons([...persons, { name: newName, number: newNumber }])
-    setShowPersons([...persons, { name: newName, number: newNumber }])
-    setNewName('')
-    setNewNumber('')
+
+
+    const newPerson = { name: newName, number: newNumber }
+    services.create(newPerson)
+      .then(response => {
+        setPersons(persons.concat(response))
+        setShowPersons(persons.concat(response))
+        setNewName('')
+        setNewNumber('')
+      })
   }
 
-  const updateRecords = e => {
+  const filterRecords = e => {
     const value = e.target.value
     setFilterName(value)
     const a = persons.filter(person => {
@@ -40,12 +55,24 @@ const App = () => {
     setShowPersons(a)
   }
 
+  const deleteRecord = (name, id) => {
+    if (window.confirm(`Are you sure you want to delete ${name}?`)) {
+      services.deteleRecord(id)
+        .then(response => {
+          console.log(response);
+          
+          setPersons(persons.filter(person => person.id !== id))
+          setShowPersons(persons.filter(person => person.id !== id))
+        })
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
       <div>
         filter shown with
-        <input value={filterName} onChange={updateRecords} />
+        <input value={filterName} onChange={filterRecords} />
       </div>
       <form onSubmit={addName}>
         <div>
@@ -60,8 +87,8 @@ const App = () => {
       {
         showPersons.map(person => (
           <div key={person.name}>
-            {person.name} -
-             {person.number}
+            {person.name} - {person.number}
+            <button onClick={() => deleteRecord(person.name, person.id)}>delete</button>
           </div>
         ))
       }
