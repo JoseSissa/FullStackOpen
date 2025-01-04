@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react'
 import  services from './services/person'
+import Notification from './components/error'
 
 const App = () => {
   const [persons, setPersons] = useState([])
-
   const [showPersons, setShowPersons] = useState(persons)
-
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
-
+  const [errorMessage, setErrorMessage] = useState(null)
+ 
   useEffect(() => {
     services.getAll()
       .then(data => {
@@ -31,6 +31,10 @@ const App = () => {
             setNewName('')
             setNewNumber('')
           })
+          .catch(error => {
+            setErrorMessage(error.message)
+            setTimeout(() => setErrorMessage(null), 3000)
+          })
       }
       return
     }
@@ -43,6 +47,12 @@ const App = () => {
         setShowPersons(persons.concat(response))
         setNewName('')
         setNewNumber('')
+        setErrorMessage("Record added successfully")
+        setTimeout(() => setErrorMessage(null), 3000)
+      })
+      .catch(error => {
+        setErrorMessage(error.message)
+        setTimeout(() => setErrorMessage(null), 3000)
       })
   }
 
@@ -70,6 +80,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} />
       <div>
         filter shown with
         <input value={filterName} onChange={filterRecords} />
