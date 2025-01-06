@@ -5,7 +5,7 @@ import Note from './components/Note'
 
 const App = () => {
   const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState('a new note...')
+  const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const App = () => {
         )}
       </ul>
       <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange} />
+        <input value={newNote} onChange={handleNoteChange} placeholder='a new note...' />
         <button type="submit">save</button>
       </form> 
     </div>
