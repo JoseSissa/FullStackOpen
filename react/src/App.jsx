@@ -58,8 +58,11 @@ const App = () => {
         </button>
       </div>
       <ul>
-        {notesToShow.map(note => 
-          <Note key={note.id} note={note} toggleImportanceOf={() => toggleImportanceOf(note.id)} />
+        {notesToShow.map(note => {
+            console.log({note});
+            
+            return (<Note key={note.id} note={note} toggleImportanceOf={() => toggleImportanceOf(note.id)} />)
+          }
         )}
       </ul>
       <form onSubmit={addNote}>

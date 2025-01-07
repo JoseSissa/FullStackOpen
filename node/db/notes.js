@@ -5,8 +5,22 @@ authToken: process.env.TURSO_AUTH_TOKEN,
   url: process.env.TURSO_DATABASE_URL,
 });
 
-export const getAll = async () => {
+export const getAllNotes = async () => {
   const result = await turso.execute("SELECT * FROM notes");
   return result.rows;
+};
+
+export const createNote = async ({ content, important }) => {
+  const result = await turso.batch(
+    [
+        {
+            sql: "INSERT INTO notes (content, important) VALUES (?, ?) RETURNING *",
+            args: [content, important]
+        }
+    ], 
+    "write"
+  );
+    
+  return result[0].rows[0];
 };
 

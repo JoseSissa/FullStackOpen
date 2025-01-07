@@ -1,7 +1,7 @@
 import express from 'express'
 const app = express()
 import cors from 'cors'
-import { getAll } from './db/notes.js'
+import { getAllNotes, createNote } from './db/notes.js'
 
 
 app.use(cors())
@@ -13,10 +13,10 @@ app.get('/', (request, response) => {
 
 app.get('/api/notes', async (request, response) => {
   try {
-    const notes = await getAll()
+    const notes = await getAllNotes()
     response.json(notes)
   } catch (error) {
-    console.log(error)
+    console.log('Error to get all Notes');
   }
 })
 
@@ -51,25 +51,26 @@ app.get('/api/notes', async (request, response) => {
 //   return maxId + 1
 // }
 
-// app.post('/api/notes', (request, response) => {
-//   const body = request.body
+app.post('/api/notes', async (request, response) => {
+  const body = request.body
 
-//   if (!body.content) {
-//     return response.status(400).json({ 
-//       error: 'content missing' 
-//     })
-//   }
+  if (!body.content) response.status(400).json({ error: 'Content missing' })    
 
-//   const note = {
-//     content: body.content,
-//     important: Boolean(body.important) || false,
-//     id: generateId(),
-//   }
+  const note = {
+    content: body.content,
+    important: Boolean(body.important) || false,
+  }
 
-//   notes = notes.concat(note)
+  try {
+    const newNote = await createNote(note)
+    response.json(newNote)
+  } catch (error) {
+    console.error(error)
+    return new Response('Error to create a new Note', { status: 500 })
+  }
 
-//   response.json(note)
-// })
+  // response.json(note)
+})
 
 // app.delete('/api/notes/:id', (request, response) => {
 //     const id = Number(request.params.id)
