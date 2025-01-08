@@ -24,3 +24,16 @@ export const createNote = async ({ content, important }) => {
   return result[0].rows[0];
 };
 
+export const updateNote = async ({ id, content, important }) => {
+  const result = await turso.batch(
+    [
+        {
+            sql: "UPDATE notes SET content = ?, important = ? WHERE id = ? RETURNING *",
+            args: [content, important, id]
+        }
+    ], 
+    "write"
+  );
+  
+  return result[0].rows[0];
+};

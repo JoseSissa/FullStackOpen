@@ -1,7 +1,7 @@
 import express from 'express'
 const app = express()
 import cors from 'cors'
-import { getAllNotes, createNote } from './db/notes.js'
+import { getAllNotes, createNote, updateNote } from './db/notes.js'
 
 
 app.use(cors())
@@ -30,26 +30,17 @@ app.get('/api/notes', async (request, response) => {
 //     }
 // })
 
-// app.put('/api/notes/:id', (request, response) => {
-//     const id = request.params.id
-//     const body = request.body
+app.put('/api/notes/:id', async (request, response) => {
+    const id = request.params.id
+    const body = request.body
 
-//     const note = notes.find(note => note.id === id)
-//     if (note) {
-//         const newNote = { ...note, ...body }
-//         notes = notes.map(note => note.id === id ? newNote : note)
-//         response.json(newNote)
-//     } else {
-//         response.status(404).end()
-//     }
-// })
-
-// const generateId = () => {
-//   const maxId = notes.length > 0
-//     ? Math.max(...notes.map(n => n.id))
-//     : 0
-//   return maxId + 1
-// }
+    try {
+      const noteModified = await updateNote({ id, content: body.content, important: body.important })
+      response.json(noteModified)      
+    } catch (error) {
+      
+    }
+})
 
 app.post('/api/notes', async (request, response) => {
   const body = request.body

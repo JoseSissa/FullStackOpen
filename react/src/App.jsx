@@ -33,7 +33,7 @@ const App = () => {
   const toggleImportanceOf = id => {
     const note = notes.find(n => n.id === id)
     const changedNote = { ...note, important: !note.important }
-  
+    
     noteService.update(id, changedNote)
       .then(response => {
         setNotes(notes.map(note => note.id !== id ? note : response))
@@ -58,9 +58,7 @@ const App = () => {
         </button>
       </div>
       <ul>
-        {notesToShow.map(note => {
-            console.log({note});
-            
+        {notesToShow.map(note => {            
             return (<Note key={note.id} note={note} toggleImportanceOf={() => toggleImportanceOf(note.id)} />)
           }
         )}
