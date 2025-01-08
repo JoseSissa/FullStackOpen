@@ -1,11 +1,22 @@
 import express from 'express'
 const app = express()
 import cors from 'cors'
-import { getAllNotes, createNote, updateNote } from './db/notes.js'
+import { getAllNotes, getNoteById, createNote, updateNote } from './db/notes.js'
 
 
 app.use(cors())
 app.use(express.json())
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
@@ -18,6 +29,20 @@ app.get('/api/notes', async (request, response) => {
   } catch (error) {
     console.log('Error to get all Notes');
   }
+})
+
+app.get('/api/notes/:id', async (request, response) => {
+    const id = request.params.id
+    try {
+      const note = await getNoteById(id)
+      note
+        ? response.json(note)
+        : response.status(404).end()
+    } catch (error) {
+      next(error)
+      // console.log(error)
+      // response.status(400).send({ error: 'malformatted id' })
+    }
 })
 
 // app.get('/api/notes/:id', (request, response) => {
@@ -69,6 +94,8 @@ app.post('/api/notes', async (request, response) => {
   
 //     response.status(204).end()
 // })
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {

@@ -10,6 +10,11 @@ export const getAllNotes = async () => {
   return result.rows;
 };
 
+export const getNoteById = async (id) => {
+  const result = await turso.execute("SELECT * FROM notes WHERE id = ?", [id]);
+  return result.rows[0];
+};
+
 export const createNote = async ({ content, important }) => {
   const result = await turso.batch(
     [
