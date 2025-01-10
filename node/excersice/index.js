@@ -49,11 +49,7 @@ app.get('/api/persons/:id', (request, response) => {
 
 app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
-    console.log(id);
     const personDeleted = persons.find(person => person.id === id)
-    console.log(personDeleted);
-    
-    const newPersons = persons.filter(person => person.id !== id)
   
     response.status(200).json(personDeleted)
 })
