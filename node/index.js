@@ -38,7 +38,7 @@ app.get('/api/notes/:id', async (request, response, next) => {
     }
 })
 
-app.post('/api/notes', async (request, response) => {
+app.post('/api/notes', async (request, response, next) => {
   const body = request.body
 
   if (!body.content) response.status(400).json({ error: 'Content missing' })    
@@ -52,11 +52,8 @@ app.post('/api/notes', async (request, response) => {
     const newNote = await createNote(note)
     response.json(newNote)
   } catch (error) {
-    console.error(error)
-    return new Response('Error to create a new Note', { status: 500 })
+    next(error)
   }
-
-  // response.json(note)
 })
 
 app.put('/api/notes/:id', async (request, response, next) => {
