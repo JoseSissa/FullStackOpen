@@ -30,18 +30,23 @@ const App = () => {
       })
   }
 
-  const toggleImportanceOf = id => {
-    const note = notes.find(n => n.id === id)
-    const changedNote = { ...note, important: !note.important }
-    
+  const toggleImportanceOf = note => {
+    const id = note.id
+    const changedNote = { ...note, important: !note.important }    
     noteService.update(id, changedNote)
       .then(response => {
-        setNotes(notes.map(note => note.id !== id ? note : response))
+        setNotes(notes.map(elem => elem.id !== id ? elem : response))
+      })
+  }
+
+  const deleteNote = id => {
+    noteService.deleteNote(id)
+      .then(res => {
+        setNotes(notes.filter(note => note.id !== res.id))
       })
   }
 
   const handleNoteChange = (event) => {
-    console.log(event.target.value)
     setNewNote(event.target.value)
   }
 
@@ -59,7 +64,7 @@ const App = () => {
       </div>
       <ul>
         {notesToShow.map(note => {            
-            return (<Note key={note.id} note={note} toggleImportanceOf={() => toggleImportanceOf(note.id)} />)
+            return (<Note key={note.id} note={note} toggleImportanceOf={() => toggleImportanceOf(note)} deleteNote={() => deleteNote(note.id)} />)
           }
         )}
       </ul>

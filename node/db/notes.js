@@ -42,3 +42,8 @@ export const updateNote = async ({ id, content, important }) => {
   
   return result[0].rows[0];
 };
+
+export const deleteNote = async (id) => {
+  const result = await turso.execute("DELETE FROM notes WHERE id = ? RETURNING *", [id]);  
+  return result.rows[0];
+};

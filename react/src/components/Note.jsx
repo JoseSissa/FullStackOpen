@@ -1,4 +1,4 @@
-const Note = ({ note, toggleImportanceOf }) => {
+const Note = ({ note, toggleImportanceOf, deleteNote }) => {
   const label = note.important
     ? 'make not important' : 'make important'
 
@@ -6,6 +6,7 @@ const Note = ({ note, toggleImportanceOf }) => {
     <li>
       {note.content} 
       <button onClick={toggleImportanceOf}>{label}</button>
+      <button onClick={deleteNote}>Delete</button>
     </li>
   )
 }
