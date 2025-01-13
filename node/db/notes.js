@@ -1,8 +1,9 @@
 import { createClient } from "@libsql/client";
+import { config } from "../utils/config.js";
 
 export const turso = createClient({
-    authToken: process.env.TURSO_AUTH_TOKEN,
-    url: process.env.TURSO_DATABASE_URL,
+    authToken: config.DB_TOKEN,
+    url: config.DB_URL,
 });
 
 export const getAllNotes = async () => {
