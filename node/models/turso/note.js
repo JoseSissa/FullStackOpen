@@ -6,7 +6,7 @@ export const turso = createClient({
     url: config.DB_URL,
 });
 
-export class MovieModel {
+export class NoteModel {
     static getAllNotes = async () => {
         const result = await turso.execute("SELECT * FROM notes");
         return result.rows;

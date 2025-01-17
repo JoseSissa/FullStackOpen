@@ -1,11 +1,9 @@
-import { MovieModel } from '../models/turso/note.js'
+import { NoteModel } from '../models/turso/note.js'
 
 export class NotesController {
     static async getAllNotes(req, res, next) {
         try {
-            const notes = await MovieModel.getAllNotes()
-            console.log({notes});
-            
+            const notes = await NoteModel.getAllNotes()            
             res.json(notes)
         } catch (error) {
             next(error)
@@ -15,7 +13,7 @@ export class NotesController {
     static async getNoteById(req, res, next) {
         const id = req.params.id
         try {
-            const note = await MovieModel.getNoteById(id)
+            const note = await NoteModel.getNoteById(id)
             note
                 ? res.json(note)
                 : res.status(404).end()
@@ -35,9 +33,10 @@ export class NotesController {
         }
 
         try {
-            const newNote = await MovieModel.createNote(note)
+            const newNote = await NoteModel.createNote(note)
             res.json(newNote)
         } catch (error) {
+            error.message= "Error creating note - REQUEST POST "            
             next(error)
         }
     }
@@ -47,7 +46,7 @@ export class NotesController {
         const body = req.body
 
         try {
-            const noteModified = await MovieModel.updateNote({ id, content: body.content, important: body.important })
+            const noteModified = await NoteModel.updateNote({ id, content: body.content, important: body.important })
             res.json(noteModified)      
         } catch (error) {
             next(error)
@@ -57,8 +56,8 @@ export class NotesController {
     static async deleteNote(req, res, next) {
         const id = Number(req.params.id)
         try {
-            const result = await MovieModel.deleteNote(id)
-            !result ? res.status(404).end() : res.json(result)
+            const result = await NoteModel.deleteNote(id)
+            !result ? res.status(404).end() : res.status(200).json(result)
         } catch (error) {
             next(error)
         }

@@ -1,7 +1,6 @@
 import { NotesController } from "../controllers/notes.js";
 import { Router } from "express";
 const notesRouter = Router();
-console.log('log desde el router');
 
 notesRouter.get("/", NotesController.getAllNotes)
 
