@@ -1,3 +1,4 @@
+# API FOR NOTES
 GET http://localhost:3001/api/notes
 
 ###
@@ -17,6 +18,12 @@ Content-Type: application/json
 ###
 
 DELETE http://localhost:3001/api/notes/8
+
+###
+
+# API FOR USERS
+
+GET http://localhost:3001/api/users
 
 ###
 

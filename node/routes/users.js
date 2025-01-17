@@ -2,7 +2,7 @@ import { UsersController } from "../controllers/users.js";
 import { Router } from "express";
 const usersRouter = Router();
 
-// usersRouter.get("/", UsersController.getAllUsers)
+usersRouter.get("/", UsersController.getAllUsers)
 
 // usersRouter.get("/:id", UsersController.getUserById)
 

@@ -7,6 +7,10 @@ export const turso = createClient({
 });
 
 export class UserModel {
+    static getAllUsers = async () => {
+        const result = await turso.execute("SELECT * FROM users");
+        return result.rows;
+    };
     static createUser = async ({ id, name, passwordHash }) => {
         const result = await turso.batch(
             [
