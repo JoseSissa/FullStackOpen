@@ -17,12 +17,12 @@ export class NoteModel {
         return result.rows[0];
     };
 
-    static createNote = async ({ content, important }) => {
+    static createNote = async ({ content, important, userId }) => {
         const result = await turso.batch(
             [
                 {
-                    sql: "INSERT INTO notes (content, important) VALUES (?, ?) RETURNING *",
-                    args: [content, important]
+                    sql: "INSERT INTO notes (content, important, userId) VALUES (?, ?, ?) RETURNING *",
+                    args: [content, important, userId]
                 }
             ], 
             "write"

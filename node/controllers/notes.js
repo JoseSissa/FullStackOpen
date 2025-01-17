@@ -1,4 +1,5 @@
 import { NoteModel } from '../models/turso/note.js'
+import { UserModel } from '../models/turso/user.js'
 
 export class NotesController {
     static async getAllNotes(req, res, next) {
@@ -25,18 +26,28 @@ export class NotesController {
     static async createNote(req, res, next) {
         const body = req.body
 
-        if (!body.content) res.status(400).json({ error: 'Content missing' })    
-
+        if (!body.content) res.status(400).json({ error: 'Content Missing' })
+        if(!body.userId) res.status(400).json({ error: 'UserId Missing, cannot create note' })
+        
         const note = {
             content: body.content,
             important: Boolean(body.important) || false,
         }
+        // check if userId exists
+        try {
+            const checkUser = await UserModel.getUserById(body.userId)
+            if (!checkUser) res.status(400).json({ error: 'UserId does not exist in DB' })
+            note.userId = body.userId
+        } catch (error) {
+            error.message= "Error verifying userId - REQUEST POST"
+            next(error)
+        }        
 
         try {
             const newNote = await NoteModel.createNote(note)
-            res.json(newNote)
+            res.status(201).json(newNote)
         } catch (error) {
-            error.message= "Error creating note - REQUEST POST "            
+            error.message= "Error creating note - REQUEST POST"            
             next(error)
         }
     }

@@ -11,6 +11,12 @@ export class UserModel {
         const result = await turso.execute("SELECT * FROM users");
         return result.rows;
     };
+
+    static getUserById = async (id) => {
+        const result = await turso.execute("SELECT * FROM users WHERE id = ?", [id]);        
+        return result.rows[0];
+    };
+
     static createUser = async ({ id, name, passwordHash }) => {
         const result = await turso.batch(
             [
@@ -20,11 +26,7 @@ export class UserModel {
                 }
             ], 
             "write"
-        );
-        console.log('HOLA MUNDO ?');
-        
-        console.log({ result })
-        
+        );        
         return result[0].rows[0];
     };
 }
