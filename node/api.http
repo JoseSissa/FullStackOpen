@@ -2,11 +2,9 @@
 GET http://localhost:3001/api/notes
 
 ###
-
 GET http://localhost:3001/api/notes/2
 
 ###
-
 POST http://localhost:3001/api/notes
 Content-Type: application/json
 
@@ -17,7 +15,6 @@ Content-Type: application/json
 }
 
 ###
-
 DELETE http://localhost:3001/api/notes/8
 
 ###
@@ -27,11 +24,28 @@ DELETE http://localhost:3001/api/notes/8
 GET http://localhost:3001/api/users
 
 ###
+GET http://localhost:3001/api/users/id/1
 
+###
+GET http://localhost:3001/api/users/username/KarolRondon
+
+###
 POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
   "name": "KarolRondon",
   "password": "test123"
+}
+
+###
+
+# API FOR LOGIN
+
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+  "username": "KarolRondon",
+  "password": "test1234"
 }
