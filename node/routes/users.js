@@ -4,7 +4,9 @@ const usersRouter = Router();
 
 usersRouter.get("/", UsersController.getAllUsers)
 
-// usersRouter.get("/:id", UsersController.getUserById)
+usersRouter.get("/id/:id", UsersController.getUserById)
+
+usersRouter.get("/username/:username", UsersController.getUserByUsername)
 
 usersRouter.post("/", UsersController.createUser)
 

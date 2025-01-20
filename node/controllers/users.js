@@ -11,6 +11,31 @@ export class UsersController {
         }
     }
 
+    static getUserById = async (req, res, next) => {
+        const id = req.params.id
+        try {
+            const user = await UserModel.getUserById(id)
+            user
+                ? res.json(user)
+                : res.status(404).end()
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static async getUserByUsername(req, res, next) {
+        const { username } = req.params
+        
+        try {
+            const user = await UserModel.getUserByUsername({ username })
+            user
+                ? res.json(user)
+                : res.status(404).end()
+        } catch (error) {
+            next(error)
+        }
+    }
+
     static async createUser(req, res, next) {
         const { name, password } = req.body
 
