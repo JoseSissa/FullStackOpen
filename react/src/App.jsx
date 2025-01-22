@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import noteService from './services/notes'
+import { FormLogin } from './components/FormLogin'
+import { FormCreateNote } from './components/FormCreateNote'
 
 import Note from './components/Note'
 
@@ -7,6 +9,7 @@ const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     noteService.getAll()
@@ -14,21 +17,6 @@ const App = () => {
         setNotes(response)
       })
   }, [])
-
-  const addNote = (e) => {
-    e.preventDefault()
-    const noteObject = {
-      // id: notes.length + 1,
-      content: newNote,
-      important: Math.random() < 0.5
-    }
-
-    noteService.create(noteObject)
-      .then(response => {
-        setNotes(notes.concat(response))
-        setNewNote('')
-      })
-  }
 
   const toggleImportanceOf = note => {
     const id = note.id
@@ -46,10 +34,6 @@ const App = () => {
       })
   }
 
-  const handleNoteChange = (event) => {
-    setNewNote(event.target.value)
-  }
-
   const notesToShow = showAll
     ? notes
     : notes.filter(note => note.important)
@@ -57,6 +41,16 @@ const App = () => {
   return (
     <div>
       <h1>Notes</h1>
+      { user === null
+        ? <FormLogin { ...{ setUser } } />
+        : (
+          <div>
+            <h3>Hola, {user.username}</h3>
+            <FormCreateNote { ...{ newNote, setNewNote, notes, setNotes } } />
+          </div>
+        )
+      }
+      
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? 'important' : 'all' }
@@ -68,10 +62,6 @@ const App = () => {
           }
         )}
       </ul>
-      <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange} placeholder='a new note...' />
-        <button type="submit">save</button>
-      </form> 
     </div>
   )
 }
