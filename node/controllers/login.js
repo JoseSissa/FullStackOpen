@@ -7,9 +7,7 @@ export class LoginController {
     static async login (request, response) {
         const { username, password } = request.body
       
-        const user = await UserModel.getUserByUsername({ username })
-        console.log({ user });
-        
+        const user = await UserModel.getUserByUsername({ username })        
 
         const passwordCorrect = !user
             ? false
@@ -30,6 +28,6 @@ export class LoginController {
       
         response
             .status(200)
-            .send({ token, name: user.name })
+            .send({ token, name: user.name, id: user.id })
     }    
 }

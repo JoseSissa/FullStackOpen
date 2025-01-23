@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import noteService from './services/notes'
+import noteService from './services/noteService'
 import { FormLogin } from './components/FormLogin'
 import { FormCreateNote } from './components/FormCreateNote'
 
@@ -16,6 +16,15 @@ const App = () => {
       .then(response => {
         setNotes(response)
       })
+  }, [])
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      noteService.setToken(user.token)
+    }
   }, [])
 
   const toggleImportanceOf = note => {
@@ -45,8 +54,8 @@ const App = () => {
         ? <FormLogin { ...{ setUser } } />
         : (
           <div>
-            <h3>Hola, {user.username}</h3>
-            <FormCreateNote { ...{ newNote, setNewNote, notes, setNotes } } />
+            <h3>Hola, {user.name}</h3>
+            <FormCreateNote { ...{ newNote, setNewNote, notes, setNotes, user } } />
           </div>
         )
       }

@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import loginService from '../services/login'
+import loginService from '../services/loginService.js'
+import noteService from '../services/noteService.js'
 
 export const FormLogin = ({ setUser }) => {
     const [username, setUsername] = useState('')
@@ -12,6 +13,12 @@ export const FormLogin = ({ setUser }) => {
             const user = await loginService.login({
               username, password,
             })
+            
+            window.localStorage.setItem(
+              'loggedNoteappUser', JSON.stringify(user)
+            )
+            
+            noteService.setToken(user.token)
             setUser(user)
             setUsername('')
             setPassword('')

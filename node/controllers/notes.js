@@ -1,5 +1,5 @@
 import { NoteModel } from '../models/turso/note.js'
-// import { UserModel } from '../models/turso/user.js'
+import { UserModel } from '../models/turso/user.js'
 import { BadRequestError } from '../utils/errors.js'
 
 export class NotesController {
@@ -31,29 +31,20 @@ export class NotesController {
             if (!body.content) next(new BadRequestError('Content Missing, cannot create note'));
             if(!body.userId) next(new BadRequestError('UserId Missing, cannot create note'));
             
+            const note = {
+                content: body.content,
+                important: Boolean(body.important) || false,
+            }
             
-            
-            // const note = {
-            //     content: body.content,
-            //     important: Boolean(body.important) || false,
-            // }
             // // check if userId exists
-            // try {
-            //     const checkUser = await UserModel.getUserById(body.userId)
-            //     if (!checkUser) res.status(400).json({ error: 'UserId does not exist in DB' })
-            //     note.userId = body.userId
-            // } catch (error) {
-            //     // error.message= "Error verifying userId - REQUEST POST"
-            //     next(error)
-            // }        
+            const checkUser = await UserModel.getUserById(body.userId)
+            if (!checkUser) next(new BadRequestError('UserId does not exist in DB'))
+            note.userId = body.userId   
+        
+            const newNote = await NoteModel.createNote(note)
+            if(!newNote) next(new BadRequestError('Cannot create note'))
+            res.status(201).json(newNote)
 
-            // try {
-            //     const newNote = await NoteModel.createNote(note)
-            //     res.status(201).json(newNote)
-            // } catch (error) {
-            //     error.message= "Error creating note - REQUEST POST"            
-            //     next(error)
-            // }
         } catch (error) {
             next(error)
         }

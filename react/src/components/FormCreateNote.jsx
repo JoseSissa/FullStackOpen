@@ -1,18 +1,18 @@
-import noteService from '../services/notes'
+import noteService from '../services/noteService'
 
-export const FormCreateNote = ({ newNote, setNewNote, notes, setNotes }) => {
+export const FormCreateNote = ({ newNote, setNewNote, notes, setNotes, user }) => {
     const addNote = (e) => {
         e.preventDefault()
         const noteObject = {
-            // id: notes.length + 1,
+            userId: user.id,
             content: newNote,
             important: Math.random() < 0.5
         }
 
         noteService.create(noteObject)
             .then(response => {
-            setNotes(notes.concat(response))
-            setNewNote('')
+                setNotes(notes.concat(response))
+                setNewNote('')
             })
     }
 
