@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import noteService from './services/noteService'
 import { FormLogin } from './components/FormLogin'
 import { FormCreateNote } from './components/FormCreateNote'
-
+import { ErrorMessage } from './components/ErrorMessage'
 import Note from './components/Note'
 
 const App = () => {
@@ -10,6 +10,7 @@ const App = () => {
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [user, setUser] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     noteService.getAll()
@@ -43,6 +44,11 @@ const App = () => {
       })
   }
 
+  const logout = () => {
+    setUser(null)
+    window.localStorage.removeItem('loggedNoteappUser')
+  }
+
   const notesToShow = showAll
     ? notes
     : notes.filter(note => note.important)
@@ -50,11 +56,17 @@ const App = () => {
   return (
     <div>
       <h1>Notes</h1>
+      {
+        errorMessage
+        ? <ErrorMessage error={errorMessage} />
+        : null
+      }
       { user === null
-        ? <FormLogin { ...{ setUser } } />
+        ? <FormLogin { ...{ setUser, setErrorMessage } } />
         : (
           <div>
             <h3>Hola, {user.name}</h3>
+            <button onClick={logout}>Log out</button>
             <FormCreateNote { ...{ newNote, setNewNote, notes, setNotes, user } } />
           </div>
         )

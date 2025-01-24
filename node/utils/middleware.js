@@ -9,9 +9,8 @@ const errorHandler = (err, req, res, next) => {
         mess,
     });
 
-    if(err.name === 'BadRequestError') {
-        
-        return res.status(statusCode).json({
+    if(err.name === 'BadRequestError') {        
+        return res.status(400).json({
             error: {
                 message: mess,
                 name,
