@@ -7,7 +7,6 @@ import Note from './components/Note'
 
 const App = () => {
   const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
@@ -61,17 +60,17 @@ const App = () => {
         ? <ErrorMessage error={errorMessage} />
         : null
       }
-      { user === null
-        ? <FormLogin { ...{ setUser, setErrorMessage } } />
-        : (
-          <div>
-            <h3>Hola, {user.name}</h3>
-            <button onClick={logout}>Log out</button>
-            <FormCreateNote { ...{ newNote, setNewNote, notes, setNotes, user } } />
-          </div>
-        )
-      }
-      
+      {
+        user === null
+          ? <FormLogin { ...{ setUser, setErrorMessage } } />
+          : (
+            <div>
+              <h3>Hola, {user.name}</h3>
+              <button onClick={logout}>Log out</button>
+              <FormCreateNote { ...{ notes, setNotes, user } } />
+            </div>
+          )
+      }       
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? 'important' : 'all' }

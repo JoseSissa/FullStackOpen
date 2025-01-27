@@ -5,6 +5,7 @@ import noteService from '../services/noteService.js'
 export const FormLogin = ({ setUser, setErrorMessage }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [loginVisible, setLoginVisible] = useState(false)
 
     const handleLogin = async (e) => {
         e.preventDefault()
@@ -32,31 +33,44 @@ export const FormLogin = ({ setUser, setErrorMessage }) => {
 
   return (
     <>
-        <form onSubmit={handleLogin}>
-            <div>
-              <label>
-                Username
-                <input
-                    type="text"
-                    value={username}
-                    name="Username"
-                    onChange={({ target }) => setUsername(target.value)}
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                Password
-                <input
-                    type="password"
-                    value={password}
-                    name="Password"
-                    onChange={({ target }) => setPassword(target.value)}
-                />
-              </label>
-            </div>
-            <button type="submit">login</button>
-        </form>
+        {
+          loginVisible
+            ? (
+              <>
+                <form onSubmit={handleLogin}>
+                  <div>
+                    <label>
+                      Username
+                      <input
+                          type="text"
+                          value={username}
+                          name="Username"
+                          onChange={({ target }) => setUsername(target.value)}
+                      />
+                    </label>
+                  </div>
+                  <div>
+                    <label>
+                      Password
+                      <input
+                          type="password"
+                          value={password}
+                          name="Password"
+                          onChange={({ target }) => setPassword(target.value)}
+                      />
+                    </label>
+                  </div>
+                  <button type="submit">Sing in</button>
+                </form>
+                <button onClick={() => setLoginVisible(!loginVisible)}>Cancel</button>
+              </>
+            )
+            : (
+              <button onClick={() => setLoginVisible(!loginVisible)}>
+                Login
+              </button>
+            )
+        }
     </>
   )
 }
