@@ -46,6 +46,7 @@ export const FormLogin = ({ setUser, setErrorMessage }) => {
                           value={username}
                           name="Username"
                           onChange={({ target }) => setUsername(target.value)}
+                          data-testid="username"
                       />
                     </label>
                   </div>
@@ -57,10 +58,11 @@ export const FormLogin = ({ setUser, setErrorMessage }) => {
                           value={password}
                           name="Password"
                           onChange={({ target }) => setPassword(target.value)}
+                          data-testid="password"
                       />
                     </label>
                   </div>
-                  <button type="submit">Sing in</button>
+                  <button type="submit">Sign in</button>
                 </form>
                 <button onClick={() => setLoginVisible(!loginVisible)}>Cancel</button>
               </>

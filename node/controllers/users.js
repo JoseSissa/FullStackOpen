@@ -49,7 +49,7 @@ export class UsersController {
         const passwordHash = await bcrypt.hash(password, saltRounds)
 
         const newUser = {
-            id: 7,
+            id: 8,
             name: name,
             passwordHash
         }
