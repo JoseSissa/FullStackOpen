@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import { configureStore } from '@reduxjs/toolkit'
-import { noteReducer } from './reducers/noteReducer'
+import { noteReducer, createNote, toggleImportanceOf } from './reducers/noteReducer'
 
 const store = configureStore({ reducer: noteReducer })
 
@@ -25,15 +25,33 @@ store.dispatch({
 })
 
 const App = () => {
+  const state = store.getState()
+
+  const addNote = e => {
+    e.preventDefault()
+    const content = e.target.note.value
+    store.dispatch(createNote(content))
+    e.target.note.value = ''
+  }
+
+  const toggleImportance = id => {
+    store.dispatch(toggleImportanceOf(id))
+  }
+
   return(
     <div>
+      <form onSubmit={addNote}>
+        <input type="text" name="note" />
+        <button>Add</button>
+      </form>
       <ul>
-        {store.getState().map(note=>
+        {state.map(note=>
           <li key={note.id}>
             {note.content} <strong>{note.important ? 'important' : ''}</strong>
+            <button onClick={() => toggleImportance(note.id)}>toggle importance</button>
           </li>
         )}
-        </ul>
+      </ul>
     </div>
   )
 }
