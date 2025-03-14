@@ -1,12 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import './index.css'
 import { Provider } from 'react-redux'
-import App from './App'
 import { configureStore } from '@reduxjs/toolkit'
-import { noteReducer } from './reducers/noteReducer'
 
-export const store = configureStore({ reducer: noteReducer })
+import './index.css'
+import App from './App'
+
+import { noteReducer } from './reducers/noteReducer'
+import { filterReducer } from './reducers/filterReducer'
+
+export const store = configureStore({
+  reducer: {
+    notes: noteReducer,
+    filter: filterReducer
+  }
+})
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

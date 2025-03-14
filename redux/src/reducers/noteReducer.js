@@ -1,3 +1,16 @@
+const initialState = [
+  {
+    content: 'reducer defines how redux store works',
+    important: true,
+    id: 1,
+  },
+  {
+    content: 'state of store can contain any data',
+    important: false,
+    id: 2,
+  },
+]
+
 const generateID = () => Math.floor(Math.random() * 1000 + 1)
 
 export const createNote = (content) => {
@@ -20,7 +33,7 @@ export const toggleImportanceOf = (id) => {
   }
 }
 
-export const noteReducer = (state = [], action) => {
+export const noteReducer = (state = initialState, action) => {
     if (action.type === '@notes/created') {
       return state.concat(action.payload)
     }
