@@ -1,5 +1,6 @@
 import { toggleImportanceOf } from '../reducers/noteReducer'
 import { useDispatch, useSelector } from 'react-redux'
+import { updateNote } from '../services/notes.js'
 
 export default function ListNotes() {
     const state = useSelector(({filter, notes}) => {
@@ -11,12 +12,12 @@ export default function ListNotes() {
             return notes.filter(note => !note.important)
         }
     })
-    console.log(state);
     
     const dispatch = useDispatch()
 
-    const toggleImportance = id => {
-        dispatch(toggleImportanceOf(id))
+    const toggleImportance = (content) => {
+        updateNote(content)
+        dispatch(toggleImportanceOf(content.id))
     }
     
     return (
@@ -25,7 +26,7 @@ export default function ListNotes() {
                 state.map(note => 
                     <li key={note.id}>
                         {note.content} <strong>{note.important ? 'important' : ''}</strong>
-                        <button onClick={() => toggleImportance(note.id)}>toggle importance</button>
+                        <button onClick={() => toggleImportance(note)}>toggle importance</button>
                     </li>
                 )
             }

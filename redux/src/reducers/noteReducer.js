@@ -7,13 +7,13 @@ export const initNotes = (notes) => {
   }
 }
 
-export const createNote = (content) => {
+export const createNote = (note) => {
   return {
     type: '@notes/created',
     payload: {
-      content,
-      important: false,
-      id: generateID()
+      content: note.content,
+      important: note.important,
+      id: note.id || generateID()
     }
   }
 }
@@ -34,6 +34,7 @@ export const noteReducer = (state = [], action) => {
 
     if(action.type === '@notes/toggleImportance') {
         const { id } = action.payload
+        
         return state.map(note => {
             if(note.id === id) {
                 return {
