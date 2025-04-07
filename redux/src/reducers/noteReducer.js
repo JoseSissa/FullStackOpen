@@ -1,20 +1,27 @@
+import { getAll, createNewNote } from "../services/notes"
 const generateID = () => Math.floor(Math.random() * 1000 + 1)
 
-export const initNotes = (notes) => {
-  return {
-    type: '@notes/init',
-    payload: notes
+export const initNotes = () => {
+  return async (dispatch) => {
+    const notes = await getAll()
+    dispatch({
+      type: '@notes/init',
+      payload: notes
+    })
   }
 }
 
-export const createNote = (note) => {
-  return {
-    type: '@notes/created',
-    payload: {
-      content: note.content,
-      important: note.important,
-      id: note.id || generateID()
-    }
+export const createNote = content => {
+  return async (dispatch) => {
+    const newNote = await createNewNote(content)
+    dispatch({
+      type: '@notes/created',
+      payload: {
+        content: newNote.content,
+        important: newNote.important,
+        id: newNote.id || generateID()
+      }
+    })
   }
 }
 

@@ -4,13 +4,12 @@ import Filters from './components/Filters.jsx'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { initNotes } from './reducers/noteReducer'
-import { getAll } from './services/notes.js'
 
 const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    getAll().then(notes => dispatch(initNotes(notes)))
+    dispatch(initNotes())
   }, [dispatch])
 
   return(
