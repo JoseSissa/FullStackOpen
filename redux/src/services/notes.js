@@ -7,7 +7,6 @@ export const getAll = async () => {
     return response.data
 }
 
-
 export const createNewNote = async (content) => {
     const object = { content, important: false }
     const response = await axios.post(baseUrl, object)

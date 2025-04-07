@@ -9,8 +9,8 @@ export default function NewNote() {
     const addNote = async (e) => {
         e.preventDefault()
         const content = e.target.note.value
-        const newNote = await createNewNote(content)        
-        dispatch(createNote(newNote))
+        const newNote = await createNewNote(content) // This create is from service   
+        dispatch(createNote(newNote))                // This create is from reducer 
         e.target.note.value = ''
     }
 
