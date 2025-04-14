@@ -1,9 +1,7 @@
-import ListNotes from './components/ListNotes.jsx'
-import NewNote from './components/NewNote.jsx'
-import Filters from './components/Filters.jsx'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { initNotes } from './reducers/noteReducer'
+import HeaderComponent from './components/HeaderComponent.jsx'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -13,12 +11,9 @@ const App = () => {
   }, [dispatch])
 
   return(
-    <div>
-      <h2>List of Notes</h2>
-      <NewNote />
-      <Filters />
-      <ListNotes />
-    </div>
+    <>
+      <HeaderComponent />
+    </>
   )
 }
 

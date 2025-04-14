@@ -1,6 +1,7 @@
 import { toggleImportanceOf } from '../reducers/noteReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateNote } from '../services/notes.js'
+import { Link } from 'react-router-dom'
 
 export default function ListNotes() {
     const state = useSelector(({filter, notes}) => {
@@ -11,7 +12,7 @@ export default function ListNotes() {
         } else if(filter === 'NONIMPORTANT') {
             return notes.filter(note => !note.important)
         }
-    })
+    })    
     
     const dispatch = useDispatch()
 
@@ -25,7 +26,8 @@ export default function ListNotes() {
             {
                 state.map(note => 
                     <li key={note.id}>
-                        {note.content} <strong>{note.important ? 'important' : ''}</strong>
+                        <Link to={`/notes/${note.id}`}>{note.content}</Link>
+                        <strong>{note.important ? 'important' : ''}</strong>
                         <button onClick={() => toggleImportance(note)}>toggle importance</button>
                     </li>
                 )
